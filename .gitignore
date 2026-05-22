@@ -1,0 +1,27 @@
+# Secrets
+.env
+.env.local
+.streamlit/secrets.toml
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Local data
+data/*.db
+data/*.db-journal
+
+# IDE / OS
+.vscode/
+.idea/
+*.zip
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
