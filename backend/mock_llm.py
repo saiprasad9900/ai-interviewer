@@ -56,12 +56,12 @@ _PLACEHOLDER_KEYS = {
 
 def use_mock_mode() -> bool:
     import os
+    from backend.secrets_config import bootstrap_groq_api_key, groq_configured
+
     if os.getenv("USE_MOCK_LLM", "").lower() in ("1", "true", "yes"):
         return True
-    key = os.getenv("GROQ_API_KEY", "").strip()
-    if key.lower() in _PLACEHOLDER_KEYS:
-        return True
-    return not key
+    bootstrap_groq_api_key()
+    return not groq_configured()
 
 
 def generate_greeting(candidate_name: str, role: str) -> str:

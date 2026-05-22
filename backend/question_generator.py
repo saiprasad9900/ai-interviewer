@@ -24,9 +24,12 @@ from backend.mock_llm import use_mock_mode
 # Lazy initialization of Groq client
 def get_groq_client():
     """Get or create Groq client with current environment variable."""
-    api_key = os.getenv("GROQ_API_KEY")
+    from backend.secrets_config import bootstrap_groq_api_key
+    api_key = bootstrap_groq_api_key()
     if not api_key:
-        raise RuntimeError("GROQ_API_KEY environment variable not set")
+        raise RuntimeError(
+            "GROQ_API_KEY not set. Add it to .env locally or Streamlit Cloud Secrets."
+        )
     return groq.Groq(api_key=api_key)
 
 # Default difficulty ramp for a fresh interview

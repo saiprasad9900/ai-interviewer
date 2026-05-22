@@ -70,7 +70,11 @@ Free tier may sleep after inactivity; first request can take ~30s to wake up.
 GROQ_API_KEY = "gsk_your_key_here"
 ```
 
-Do **not** set `API_BASE` unless you use a separate Render backend (Step 2).
+Use the **exact** key name `GROQ_API_KEY` (see `.streamlit/secrets.toml.example`).
+
+- Do **not** set `USE_MOCK_LLM` (that forces demo mode).
+- Do **not** set `API_BASE` unless you use a separate Render backend (Step 2).
+- After saving secrets, click **Reboot app** (or wait for redeploy).
 
 5. Click **Deploy**
 

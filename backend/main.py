@@ -32,6 +32,8 @@ from backend.voice          import speak_text, transcribe_bytes
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    from backend.secrets_config import bootstrap_groq_api_key
+    bootstrap_groq_api_key()
     init_db()
     yield
 
@@ -80,7 +82,12 @@ class TTSRequest(BaseModel):
 @app.get("/health")
 def health():
     from backend.mock_llm import use_mock_mode
-    return {"status": "ok", "demo_mode": use_mock_mode()}
+    from backend.secrets_config import groq_configured
+    return {
+        "status": "ok",
+        "demo_mode": use_mock_mode(),
+        "groq_configured": groq_configured(),
+    }
 
 
 @app.post("/session/start")

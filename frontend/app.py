@@ -11,12 +11,17 @@ import time
 import requests
 import streamlit as st
 
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, _ROOT)
+
 from avatar_ui import render_interviewer_avatar, render_interviewer_preview
+from backend.secrets_config import bootstrap_groq_api_key, groq_configured
 
 # ─────────────────────────────────────────────
 # Configuration
 # ─────────────────────────────────────────────
+bootstrap_groq_api_key()
 API_BASE = os.getenv("API_BASE", "http://localhost:8000")
 
 st.set_page_config(
@@ -25,6 +30,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# Re-load after Streamlit secrets are available (Streamlit Cloud)
+bootstrap_groq_api_key()
 
 # ─────────────────────────────────────────────
 # Styling
@@ -218,6 +226,19 @@ def submit_answer(answer: str):
 with st.sidebar:
     st.markdown("## 🤖 ARIA")
     st.markdown("*Advanced Recruiting Intelligence Agent*")
+
+    _health = api_call("get", "/health")
+    if _health is not None:
+        if _health.get("demo_mode"):
+            st.error(
+                "**Demo mode** — Groq API key missing. "
+                "In Streamlit Cloud → App settings → Secrets, add:\n\n"
+                "`GROQ_API_KEY = \"gsk_...\"`\n\n"
+                "Remove `USE_MOCK_LLM` if present, then **Reboot app**."
+            )
+        elif _health.get("groq_configured"):
+            st.success("Groq AI active")
+
     st.divider()
 
     if st.button("＋ New Interview"):

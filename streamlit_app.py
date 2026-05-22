@@ -31,7 +31,17 @@ def _load_local_env() -> None:
         pass
 
 
+def _bootstrap_secrets() -> None:
+    from backend.secrets_config import bootstrap_groq_api_key
+    key = bootstrap_groq_api_key()
+    if key:
+        print("[ARIA] Groq API key loaded.")
+    else:
+        print("[ARIA] No Groq API key — demo mode. Set GROQ_API_KEY in Streamlit Secrets.")
+
+
 def _start_embedded_api() -> None:
+    _bootstrap_secrets()
     import uvicorn
     uvicorn.run(
         "backend.main:app",
@@ -72,6 +82,7 @@ def _ensure_embedded_api() -> None:
 
 
 _load_local_env()
+_bootstrap_secrets()
 _ensure_embedded_api()
 
 import runpy
