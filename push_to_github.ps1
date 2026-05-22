@@ -6,6 +6,12 @@ param(
     [string]$RepoName = "ai-interviewer"
 )
 
+# Allow full URL by mistake: https://github.com/user -> user
+if ($GitHubUsername -match "github\.com[:/]+([^/]+)") {
+    $GitHubUsername = $Matches[1]
+}
+$GitHubUsername = $GitHubUsername.Trim().TrimEnd("/")
+
 $git = "C:\Program Files\Git\bin\git.exe"
 if (-not (Test-Path $git)) {
     Write-Error "Git not found. Install from https://git-scm.com/download/win"
