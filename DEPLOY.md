@@ -1,13 +1,13 @@
 # Deploy ARIA via GitHub
 
-This app has two parts:
+**Recommended (easiest):** one app on [Streamlit Community Cloud](https://share.streamlit.io) — the backend runs inside the same app automatically.
 
 | Part | Host | Free tier |
 |------|------|-----------|
-| **Backend** (FastAPI) | [Render](https://render.com) | Yes |
-| **Frontend** (Streamlit) | [Streamlit Community Cloud](https://share.streamlit.io) | Yes |
+| **Full app** (Streamlit + API) | [Streamlit Cloud](https://share.streamlit.io) | Yes |
+| **Backend only** (optional) | [Render](https://render.com) | Yes |
 
-Both connect to your **GitHub** repo and redeploy on every push.
+Repo: **https://github.com/saiprasad9900/ai-interviewer**
 
 ---
 
@@ -59,25 +59,25 @@ Free tier may sleep after inactivity; first request can take ~30s to wake up.
 
 ---
 
-## Step 3 — Deploy the frontend (Streamlit Cloud)
+## Step 3 — Deploy on Streamlit Cloud (one app, recommended)
 
-1. Sign in at https://share.streamlit.io with **GitHub**  
-2. **New app** → pick your repo, branch `main`  
-3. Set **Main file path**: `streamlit_app.py`  
-4. **Advanced settings → Secrets** (TOML):
+1. Sign in at https://share.streamlit.io with **GitHub** (same account: `saiprasad9900`)  
+2. **Create app** → Repository: `saiprasad9900/ai-interviewer`, Branch: `main`  
+3. **Main file path**: `streamlit_app.py`  
+4. **Secrets** (only Groq key required — backend is embedded):
 
 ```toml
 GROQ_API_KEY = "gsk_your_key_here"
-API_BASE = "https://ai-interviewer-api.onrender.com"
 ```
 
-Use your real Render URL from Step 2 (no trailing slash).
+Do **not** set `API_BASE` unless you use a separate Render backend (Step 2).
 
 5. Click **Deploy**
 
-Your public interview app URL will look like:
+Your public URL: `https://<app-name>.streamlit.app`
 
-`https://your-app-name.streamlit.app`
+**Direct deploy link** (after signing in):  
+https://share.streamlit.io/deploy?repository=saiprasad9900/ai-interviewer&branch=main&mainModule=streamlit_app.py
 
 ---
 
